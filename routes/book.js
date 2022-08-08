@@ -1,4 +1,3 @@
-
 const express = require('express')
 const request = require('request')
 const log = require('../middleware/log')
@@ -6,7 +5,7 @@ const router = express.Router()
 // check book 
 const checkBooks = (id)=>{
     return new Promise((resolve, reject)=>{
-        const url = 'http://192.168.56.102:3007/books/info/'+id
+        const url = 'http://127.0.0.1:3000/books/info/'+id
         request({url, json:true}, (error, res, body)=>{
             if(error){
                 return reject(error)
@@ -15,8 +14,7 @@ const checkBooks = (id)=>{
             }  
             const count = body.numberOfItems
             if(count<=0){
-                 return reject("Out of stock")
-                 console.log("Out Of stock")
+                 return reject("This item is out of stock")
             }
             return resolve({msg:"available", count})
 
@@ -26,7 +24,7 @@ const checkBooks = (id)=>{
 //buy book
 const buyBook = (id,count)=>{
     return new Promise((resolve, reject)=>{
-        const decUrl = 'http://192.168.56.102:3007/books/'+id
+        const decUrl = 'http://127.0.0.1:3000/books/'+id
         request.patch(
             decUrl,
             {json:{numberOfItems: count-1}},
@@ -34,12 +32,11 @@ const buyBook = (id,count)=>{
                 if(error){
                     return reject(error)
                 }else if(res.statusCode == 200){
-                    return resolve("Succesfully ordered")
+                    return resolve("item purchased successfully")
                             }
                         })  
     }) 
 }
-
 //purchase a book
 router.get('/books/purchase/:id', log, async(req, res)=>{
     try{
