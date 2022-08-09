@@ -5,7 +5,7 @@ const router = express.Router()
 // check book 
 const checkBooks = (id)=>{
     return new Promise((resolve, reject)=>{
-        const url = 'http://127.0.0.1:3000/books/info/'+id
+        const url = 'http://127.0.0.1:3001/books/info/'+id
         request({url, json:true}, (error, res, body)=>{
             if(error){
                 return reject(error)
@@ -24,7 +24,7 @@ const checkBooks = (id)=>{
 //buy book
 const buyBook = (id,count)=>{
     return new Promise((resolve, reject)=>{
-        const decUrl = 'http://127.0.0.1:3000/books/'+id
+        const decUrl = 'http://127.0.0.1:3001/books/'+id
         request.patch(
             decUrl,
             {json:{numberOfItems: count-1}},
